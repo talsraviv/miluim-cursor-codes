@@ -30,9 +30,7 @@ function getCodes() {
   return codes;
 }
 
-// Serve the HTML page
-app.get('/', (req, res) => {
-  res.send(`
+const HTML = `
 <!DOCTYPE html>
 <html dir="rtl" lang="he">
 <head>
@@ -162,11 +160,7 @@ app.get('/', (req, res) => {
         
         if (data.url) {
           result.className = 'result show success';
-          result.innerHTML = \`
-            <p>הקוד שלכם:</p>
-            <a href="\${data.url}" target="_blank">\${data.url}</a>
-            <p class="instructions">לחצו על הקישור, התחברו ל-Cursor, ולחצו Redeem.</p>
-          \`;
+          result.innerHTML = '<p>הקוד שלכם:</p><a href="' + data.url + '" target="_blank">' + data.url + '</a><p class="instructions">לחצו על הקישור, התחברו ל-Cursor, ולחצו Redeem.</p>';
         } else {
           result.className = 'result show error';
           result.innerHTML = 'המייל לא נמצא במערכת. נסו שוב או פנו לטל.';
@@ -179,7 +173,11 @@ app.get('/', (req, res) => {
   </script>
 </body>
 </html>
-  `);
+`;
+
+// Serve the HTML page
+app.get('/', (req, res) => {
+  res.send(HTML);
 });
 
 // API endpoint for lookup
@@ -191,5 +189,5 @@ app.get('/lookup', (req, res) => {
 });
 
 app.listen(PORT, () => {
-  console.log(\`Server running on port \${PORT}\`);
+  console.log('Server running on port ' + PORT);
 });
